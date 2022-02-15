@@ -8,16 +8,11 @@ A simple `docker-compose` for testing image contents using [Snyk](https://snyk.i
 ## setup
 
 ``` sh
-# make snykii directory
-mkdir snykii && cd snykii
+# clone repo
+git clone https://github.com/rjchicago/snykii.git && cd snykii
 
-# copy resources
-uri=https://raw.githubusercontent.com/rjchicago/snykii/master/
-curl ${uri}docker-compose.yml -o docker-compose.yml
-
-# edit .env with your SNYK_TOKEN
-echo "SNYK_TOKEN=<SNYK_TOKEN>" > .env
-vi .env
+# update .env with your SNYK_TOKEN
+cp .env.example .env && vi .env
 ```
 
 ## usage
@@ -26,7 +21,7 @@ vi .env
 # set IMAGE variable
 export IMAGE=${IMAGE}
 
-# compose up
+# compose up & ssh
 docker-compose up -d
 docker exec -it snyk sh
 ```
@@ -62,7 +57,7 @@ snyk log4shell
 ## cleanup
 
 ``` sh
-# compose down
+# compose down & rm volume
 docker-compose down
 docker volume rm snykii_data
 ```
