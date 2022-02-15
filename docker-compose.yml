@@ -1,0 +1,23 @@
+version: '3.8'
+
+volumes:
+  data:
+
+services:
+  copy:
+    image: $IMAGE
+    entrypoint: ["cp", "-r", ".", "/__temp"]
+    volumes:
+      - data:/__temp
+  snyk:
+    image: snyk/snyk:alpine
+    container_name: snyk
+    command: ${COMMAND:-tail -f /dev/null}
+    environment:
+      - IMAGE
+    depends_on:
+      - copy
+    env_file:
+      - .env
+    volumes:
+      - data:/app
